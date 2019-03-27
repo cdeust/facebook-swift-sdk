@@ -72,7 +72,7 @@ public struct Permission: Hashable, ExpressibleByStringLiteral {
   public var hashValue: Int {
     return name.hashValue
   }
-
+  
   /**
    Compare two `Permission`s for equality.
 

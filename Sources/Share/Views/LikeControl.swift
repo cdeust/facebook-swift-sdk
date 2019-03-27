@@ -64,10 +64,10 @@ public class LikeControl: UIView {
   /// The foreground color to use for the content of the control.
   public var foregroundColor: UIColor {
     get {
-      return sdkLikeControl.foregroundColor
+      return sdkLikeControl.foregroundColor__deprecated
     }
     set {
-      sdkLikeControl.foregroundColor = newValue
+      sdkLikeControl.foregroundColor__deprecated = newValue
     }
   }
 
@@ -87,16 +87,16 @@ public class LikeControl: UIView {
   public var auxilaryStyle: AuxilaryStyle {
     get {
       return AuxilaryStyle(
-        sdkStyle: sdkLikeControl.likeControlStyle,
-        sdkHorizontalAlignment: sdkLikeControl.likeControlHorizontalAlignment,
-        sdkAuxilaryPosition: sdkLikeControl.likeControlAuxiliaryPosition
+        sdkStyle: sdkLikeControl.likeControlStyle__deprecated,
+        sdkHorizontalAlignment: sdkLikeControl.likeControlHorizontalAlignment__deprecated,
+        sdkAuxilaryPosition: sdkLikeControl.likeControlAuxiliaryPosition__deprecated
       )
     }
     set {
       (
-        sdkLikeControl.likeControlStyle,
-        sdkLikeControl.likeControlHorizontalAlignment,
-        sdkLikeControl.likeControlAuxiliaryPosition
+        sdkLikeControl.likeControlStyle__deprecated,
+        sdkLikeControl.likeControlHorizontalAlignment__deprecated,
+        sdkLikeControl.likeControlAuxiliaryPosition__deprecated
       ) = newValue.sdkStyleRepresentation
     }
   }
@@ -110,10 +110,10 @@ public class LikeControl: UIView {
    */
   public var preferredMaxLayoutWidth: CGFloat {
     get {
-      return sdkLikeControl.preferredMaxLayoutWidth
+      return sdkLikeControl.preferredMaxLayoutWidth__deprecated
     }
     set {
-      sdkLikeControl.preferredMaxLayoutWidth = newValue
+      sdkLikeControl.preferredMaxLayoutWidth__deprecated = newValue
     }
   }
 
