@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DB9E3C6224BBD73000D9F39 /* Bolts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB9E3AF224BB654000D9F39 /* Bolts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		813C9C241D1DB8E500288BFA /* LoginButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C9C231D1DB8E500288BFA /* LoginButtonViewController.swift */; };
 		815463411D38090E0069489A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81AB8B791D36D60100066F63 /* FBSDKCoreKit.framework */; };
 		815463421D38090E0069489A /* FBSDKCoreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 81AB8B791D36D60100066F63 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -312,6 +313,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2DB9E3C6224BBD73000D9F39 /* Bolts.framework in Embed Frameworks */,
 				815463421D38090E0069489A /* FBSDKCoreKit.framework in Embed Frameworks */,
 				81F43A1F1D060C6F00569A1A /* FacebookShare.framework in Embed Frameworks */,
 				815463461D38090E0069489A /* FBSDKLoginKit.framework in Embed Frameworks */,
@@ -1030,6 +1032,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 81BA3CBF1D35949E00017B14 /* SwiftCatalog.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1038,6 +1041,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 81BA3CBF1D35949E00017B14 /* SwiftCatalog.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
