@@ -35,7 +35,7 @@ public enum LikableObject: Equatable {
    */
   case unknown(objectId: String)
 
-  internal init(sdkObjectType: FBSDKLikeObjectType, sdkObjectId: String) {
+  internal init(sdkObjectType: LikeObjectType, sdkObjectId: String) {
     switch sdkObjectType {
     case .openGraph: self = .openGraph(objectId: sdkObjectId)
     case .page: self = .page(objectId: sdkObjectId)
@@ -43,7 +43,7 @@ public enum LikableObject: Equatable {
     }
   }
 
-  internal var sdkObjectRepresntation: (objectType: FBSDKLikeObjectType, objectId: String) {
+  internal var sdkObjectRepresntation: (objectType: LikeObjectType, objectId: String) {
     switch self {
     case .openGraph(let objectId): return (.openGraph, objectId)
     case .page(let objectId): return (.page, objectId)

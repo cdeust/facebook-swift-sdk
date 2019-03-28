@@ -18,24 +18,12 @@
 
 import FBSDKShareKit
 
-@testable import FacebookCore
-
-private struct BridgingFailedError<Content: ContentProtocol>: Error {
+public struct BridgingFailedError<Content: ContentProtocol>: Error {
   let nativeResults: [AnyHashable: Any]?
 }
 
-internal class SDKSharingDelegateBridge<Content: ContentProtocol>: NSObject, FBSDKSharingDelegate {
-  internal var completion: ((ContentSharerResult<Content>) -> Void)?
-
-  func setupAsDelegateFor(_ sharer: FBSDKSharing) {
-    // We need for the connection to retain us,
-    // so we can stick around and keep calling into handlers,
-    // as long as the connection is alive/sending messages.
-    objc_setAssociatedObject(sharer, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN)
-    sharer.delegate = self
-  }
-
-  func sharer(_ sharer: FBSDKSharing, didCompleteWithResults results: [AnyHashable: Any]?) {
+public class SDKSharingDelegateBridge<Content: ContentProtocol>: NSObject, SharingDelegate {
+  public func sharer(_ sharer: Sharing, didCompleteWithResults results: [String : Any]) {
     let dictionary = results.map {
       $0.keyValueFlatMap { key, value in
         (key as? String, value as? String)
@@ -44,16 +32,28 @@ internal class SDKSharingDelegateBridge<Content: ContentProtocol>: NSObject, FBS
     let sharingResult = dictionary.map(Content.Result.init)
     let result: ContentSharerResult<Content> = sharingResult.map(ContentSharerResult.success) ??
       .failed(BridgingFailedError<Content>(nativeResults: results))
-
+    
     completion?(result)
   }
-
-  func sharer(_ sharer: FBSDKSharing, didFailWithError error: Error) {
+  
+  public func sharer(_ sharer: Sharing, didFailWithError error: Error) {
     let error: Error = ShareError(error: (error as NSError)) as Error? ?? error
     completion?(.failed(error))
   }
-
-  func sharerDidCancel(_ sharer: FBSDKSharing) {
+  
+  public func sharerDidCancel(_ sharer: Sharing) {
     completion?(.cancelled)
   }
+  
+  public var completion: ((ContentSharerResult<Content>) -> Void)?
+
+  public func setupAsDelegateFor(_ sharer: Sharing) {
+    // We need for the connection to retain us,
+    // so we can stick around and keep calling into handlers,
+    // as long as the connection is alive/sending messages.
+    objc_setAssociatedObject(sharer, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN)
+    sharer.delegate = self
+  }
+
+  
 }

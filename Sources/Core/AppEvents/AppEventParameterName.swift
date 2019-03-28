@@ -72,18 +72,18 @@ public enum AppEventParameterName: Hashable, RawRepresentable, ExpressibleByStri
   /// The corresponding `String` value.
   public var rawValue: String {
     switch self {
-    case .content: return FBSDKAppEventParameterNameContent
-    case .contentId: return FBSDKAppEventParameterNameContentID
-    case .contentType: return FBSDKAppEventParameterNameContentType
-    case .currency: return FBSDKAppEventParameterNameCurrency
-    case .description: return FBSDKAppEventParameterNameDescription
-    case .level: return FBSDKAppEventNameAchievedLevel
-    case .maxRatingValue: return FBSDKAppEventParameterNameMaxRatingValue
-    case .itemCount: return FBSDKAppEventParameterNameNumItems
-    case .paymentInfoAvailable: return FBSDKAppEventParameterNamePaymentInfoAvailable
-    case .registrationMethod: return FBSDKAppEventParameterNameRegistrationMethod
-    case .searchedString: return FBSDKAppEventParameterNameSearchString
-    case .successful: return FBSDKAppEventParameterNameSuccess
+    case .content: return AppEvents.ParameterName.content.rawValue
+    case .contentId: return AppEvents.ParameterName.contentID.rawValue
+    case .contentType: return AppEvents.ParameterName.contentType.rawValue
+    case .currency: return AppEvents.ParameterName.currency.rawValue
+    case .description: return AppEvents.ParameterName.description.rawValue
+    case .level: return AppEvents.Name.achievedLevel.rawValue
+    case .maxRatingValue: return AppEvents.ParameterName.maxRatingValue.rawValue
+    case .itemCount: return AppEvents.ParameterName.numItems.rawValue
+    case .paymentInfoAvailable: return AppEvents.ParameterName.paymentInfoAvailable.rawValue
+    case .registrationMethod: return AppEvents.ParameterName.registrationMethod.rawValue
+    case .searchedString: return AppEvents.ParameterName.searchString.rawValue
+    case .successful: return AppEvents.ParameterName.success.rawValue
     case .custom(let string): return string
     }
   }

@@ -32,19 +32,19 @@ public struct Hashtag: Hashable {
    If this is not a valid hashtag (matching the regular expression `#\w+`), the initializer returns `nil`.
    */
   public init?(_ string: String) {
-    guard let sdkHashtag = FBSDKHashtag(string: string) else { return nil }
+    guard let sdkHashtag = Hashtag(string) else { return nil }
     self.init(sdkHashtag: sdkHashtag)
   }
 
-  internal init?(sdkHashtag: FBSDKHashtag) {
-    if !sdkHashtag.isValid {
+  internal init?(sdkHashtag: Hashtag) {
+    if sdkHashtag.stringValue.isEmpty {
       return nil
     }
-    self.stringValue = sdkHashtag.stringRepresentation
+    self.stringValue = sdkHashtag.stringValue
   }
 
-  internal var sdkHashtagRepresentation: FBSDKHashtag {
-    return FBSDKHashtag(string: stringValue)
+  internal var sdkHashtagRepresentation: Hashtag {
+    return Hashtag(stringValue)!
   }
 
   // MARK: Hashable

@@ -31,7 +31,7 @@ import Foundation
 @available(*, deprecated, message: "FBSDKLikeButton is deprecated")
 public class LikeButton: UIView {
 
-  private var sdkLikeButton: FBSDKLikeButton
+  private var sdkLikeButton: LikeButton
 
   /// If `true`, a sound is played when the reciever is toggled.
   public var isSoundEnabled: Bool {
@@ -46,12 +46,10 @@ public class LikeButton: UIView {
   /// The object to like
   public var object: LikableObject {
     get {
-      return LikableObject(sdkObjectType: sdkLikeButton.objectType, sdkObjectId: sdkLikeButton.objectID)
+      return LikableObject(sdkObjectType: sdkLikeButton.object.sdkObjectRepresntation.objectType, sdkObjectId: sdkLikeButton.object.sdkObjectRepresntation.objectId)
     }
     set {
       let sdkRepresentation = newValue.sdkObjectRepresntation
-      sdkLikeButton.objectType = sdkRepresentation.objectType
-      sdkLikeButton.objectID = sdkRepresentation.objectId
     }
   }
 
@@ -62,7 +60,7 @@ public class LikeButton: UIView {
    - parameter object: The object to like.
    */
   public init(frame: CGRect? = nil, object: LikableObject) {
-    let sdkLikeButton = FBSDKLikeButton()
+    let sdkLikeButton = LikeButton(frame: frame, object: object)
     let frame = frame ?? sdkLikeButton.bounds
 
     self.sdkLikeButton = sdkLikeButton
@@ -79,7 +77,7 @@ public class LikeButton: UIView {
    - parameter aDecoder: The coder to initialize from.
    */
   public required init?(coder aDecoder: NSCoder) {
-    sdkLikeButton = FBSDKLikeButton()
+    sdkLikeButton = LikeButton(coder: aDecoder)!
 
     super.init(coder: aDecoder)
     addSubview(sdkLikeButton)

@@ -59,32 +59,32 @@ public enum SDKLoggingBehavior {
 
   internal init?(sdkStringValue: String) {
     switch sdkStringValue {
-    case FBSDKLoggingBehaviorAccessTokens: self = .accessTokens
-    case FBSDKLoggingBehaviorPerformanceCharacteristics: self = .performanceCharacteristics
-    case FBSDKLoggingBehaviorAppEvents: self = .appEvents
-    case FBSDKLoggingBehaviorInformational: self = .informational
-    case FBSDKLoggingBehaviorCacheErrors: self = .cacheErrors
-    case FBSDKLoggingBehaviorUIControlErrors: self = .uiControlErrors
-    case FBSDKLoggingBehaviorGraphAPIDebugWarning: self = .graphAPIDebugWarning
-    case FBSDKLoggingBehaviorGraphAPIDebugInfo: self = .graphAPIDebugInfo
-    case FBSDKLoggingBehaviorNetworkRequests: self = .networkRequests
-    case FBSDKLoggingBehaviorDeveloperErrors: self = .developerErrors
+    case LoggingBehavior.accessTokens.rawValue: self = .accessTokens
+    case LoggingBehavior.performanceCharacteristics.rawValue: self = .performanceCharacteristics
+    case LoggingBehavior.appEvents.rawValue: self = .appEvents
+    case LoggingBehavior.informational.rawValue: self = .informational
+    case LoggingBehavior.cacheErrors.rawValue: self = .cacheErrors
+    case LoggingBehavior.uiControlErrors.rawValue: self = .uiControlErrors
+    case LoggingBehavior.graphAPIDebugWarning.rawValue: self = .graphAPIDebugWarning
+    case LoggingBehavior.graphAPIDebugInfo.rawValue: self = .graphAPIDebugInfo
+    case LoggingBehavior.networkRequests.rawValue: self = .networkRequests
+    case LoggingBehavior.developerErrors.rawValue: self = .developerErrors
     default: return nil
     }
   }
 
   internal var sdkStringValue: String {
     switch self {
-    case .accessTokens: return FBSDKLoggingBehaviorAccessTokens
-    case .performanceCharacteristics: return FBSDKLoggingBehaviorPerformanceCharacteristics
-    case .appEvents: return FBSDKLoggingBehaviorAppEvents
-    case .informational: return FBSDKLoggingBehaviorInformational
-    case .cacheErrors: return FBSDKLoggingBehaviorCacheErrors
-    case .uiControlErrors: return FBSDKLoggingBehaviorUIControlErrors
-    case .graphAPIDebugWarning: return FBSDKLoggingBehaviorGraphAPIDebugWarning
-    case .graphAPIDebugInfo: return FBSDKLoggingBehaviorGraphAPIDebugInfo
-    case .networkRequests: return FBSDKLoggingBehaviorNetworkRequests
-    case .developerErrors: return FBSDKLoggingBehaviorDeveloperErrors
+    case .accessTokens: return LoggingBehavior.accessTokens.rawValue
+    case .performanceCharacteristics: return LoggingBehavior.performanceCharacteristics.rawValue
+    case .appEvents: return LoggingBehavior.appEvents.rawValue
+    case .informational: return LoggingBehavior.informational.rawValue
+    case .cacheErrors: return LoggingBehavior.cacheErrors.rawValue
+    case .uiControlErrors: return LoggingBehavior.uiControlErrors.rawValue
+    case .graphAPIDebugWarning: return LoggingBehavior.graphAPIDebugWarning.rawValue
+    case .graphAPIDebugInfo: return LoggingBehavior.graphAPIDebugInfo.rawValue
+    case .networkRequests: return LoggingBehavior.networkRequests.rawValue
+    case .developerErrors: return LoggingBehavior.developerErrors.rawValue
     }
   }
 }

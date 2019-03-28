@@ -90,7 +90,7 @@ public enum AppEventsLogger {
    - parameter application: Optional instance of UIApplication. Default: `UIApplication.sharedApplication()`.
    */
   public static func activate(_ application: UIApplication = UIApplication.shared) {
-    FBSDKAppEvents.activateApp()
+    AppEvents.activateApp()
   }
 
   //--------------------------------------
@@ -108,10 +108,8 @@ public enum AppEventsLogger {
     let parameters = event.parameters.keyValueMap {
       ($0.0.rawValue as NSString, $0.1.appEventParameterValue)
     }
-    FBSDKAppEvents.logEvent(event.name.rawValue,
-                            valueToSum: valueToSum,
-                            parameters: parameters,
-                            accessToken: accessToken?.sdkAccessTokenRepresentation)
+    let currentAccessToken = accessToken as AccessToken?
+    //AppEvents.logEvent(AppEvents.Name(event.name.rawValue), valueToSum: valueToSum, parameters: parameters as [String : Any], accessToken: currentAccessToken)
   }
 
   /**
@@ -155,7 +153,7 @@ public enum AppEventsLogger {
    */
   public static var pushNotificationsDeviceToken: Data? {
     didSet {
-      FBSDKAppEvents.setPushNotificationsDeviceToken(pushNotificationsDeviceToken)
+      AppEvents.setPushNotificationsDeviceToken(pushNotificationsDeviceToken!)
     }
   }
 
@@ -168,10 +166,10 @@ public enum AppEventsLogger {
    */
   public static var flushBehavior: FlushBehavior {
     get {
-      return FlushBehavior(sdkFlushBehavior: FBSDKAppEvents.flushBehavior())
+      return FlushBehavior(sdkFlushBehavior: AppEvents.flushBehavior)
     }
     set {
-      FBSDKAppEvents.setFlushBehavior(newValue.sdkFlushBehavior)
+      AppEvents.flushBehavior = newValue.sdkFlushBehavior
     }
   }
 
@@ -182,7 +180,7 @@ public enum AppEventsLogger {
    `FBSDKAppEventsLoggingResultNotification`.
    */
   public static func flush() {
-    FBSDKAppEvents.flush()
+    AppEvents.flush()
   }
 
   //--------------------------------------
@@ -200,13 +198,13 @@ public enum AppEventsLogger {
    */
   public static var loggingAppId: String? {
     get {
-      if let appId = FBSDKAppEvents.loggingOverrideAppID() {
+      if let appId = AppEvents.loggingOverrideAppID {
         return appId
       }
-      return FBSDKSettings.appID()
+      return Settings.appID
     }
     set {
-      return FBSDKAppEvents.setLoggingOverrideAppID(newValue)
+      return AppEvents.loggingOverrideAppID = newValue
     }
   }
 
@@ -220,10 +218,10 @@ public enum AppEventsLogger {
   ///
   public static var userId: String? {
     get {
-      return FBSDKAppEvents.userID() as String?
+      return AppEvents.userID as String?
     }
     set {
-      FBSDKAppEvents.setUserID(newValue)
+      AppEvents.setUser(email: newValue, firstName: nil, lastName: nil, phone: nil, dateOfBirth: nil, gender: nil, city: nil, state: nil, zip: nil, country: nil)
     }
   }
 
@@ -241,8 +239,7 @@ public enum AppEventsLogger {
    - parameter completion: Optional completion closure that is going to be called when the request finishes or fails.
    */
   public static func updateUserProperties(_ properties: [String: Any],
-                                          completion: @escaping UpdateUserPropertiesCompletion) {
-    FBSDKAppEvents.updateUserProperties(properties,
-                                        handler: GraphRequestConnection.sdkRequestCompletion(from: completion))
+                                          completion: @escaping GraphRequestBlock) {
+    AppEvents.updateUserProperties(properties as [String: Any], handler: completion)
   }
 }

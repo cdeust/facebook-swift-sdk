@@ -92,17 +92,17 @@ public struct GameRequest: Equatable {
 
   // MARK: Internal
 
-  internal var sdkContentRepresentation: FBSDKGameRequestContent {
-    let sdkContent = FBSDKGameRequestContent()
+  internal var sdkContentRepresentation: GameRequestContent {
+    let sdkContent = GameRequestContent()
     let sdkActionRepresentation = actionType?.sdkActionRepresentation ?? (.none, nil)
     sdkContent.actionType = sdkActionRepresentation.0
-    sdkContent.objectID = sdkActionRepresentation.1
+    sdkContent.objectID = sdkActionRepresentation.1!
     sdkContent.data = data
     sdkContent.filters = recipientsFilter.sdkFilterRepresentation
     sdkContent.title = title
     sdkContent.message = message
-    sdkContent.recipients = recipients?.map { $0.rawValue }
-    sdkContent.recipientSuggestions = recipientSuggestions?.map { $0.rawValue }
+    sdkContent.recipients = (recipients?.map { $0.rawValue })!
+    sdkContent.recipientSuggestions = (recipientSuggestions?.map { $0.rawValue })!
     return sdkContent
   }
 }

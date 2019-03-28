@@ -25,7 +25,7 @@ import ObjectiveC.runtime
  this architecture.
  */
 internal protocol SDKBridgedContent {
-  var sdkSharingContentRepresentation: FBSDKSharingContent { get }
+  var sdkSharingContentRepresentation: SharingContent { get }
 }
 
 internal enum ContentBridger {
@@ -45,7 +45,7 @@ internal enum ContentBridger {
   // not a static pointer, which is what we need.
   private static let contentHolderKey: UnsafeMutablePointer<UInt8> = .allocate(capacity: 1)
 
-  internal static func bridgeToObjC<C: ContentProtocol>(_ content: C) -> FBSDKSharingContent? {
+  internal static func bridgeToObjC<C: ContentProtocol>(_ content: C) -> SharingContent? {
     guard let nativeContent = content as? SDKBridgedContent else {
       return nil
     }
@@ -57,7 +57,7 @@ internal enum ContentBridger {
     return sdkRepresentation
   }
 
-  internal static func bridgeToSwift<C: ContentProtocol>(_ content: FBSDKSharingContent) -> C? {
+  internal static func bridgeToSwift<C: ContentProtocol>(_ content: SharingContent) -> C? {
     let object = objc_getAssociatedObject(content, contentHolderKey)
     guard let contentHolder = object as? SwiftContentHolder<C> else {
       return nil

@@ -132,12 +132,12 @@ public struct LinkShareContent: Equatable, ContentProtocol, SDKBridgedContent {
 
   // MARK: SDKBridgedContent
 
-  internal var sdkSharingContentRepresentation: FBSDKSharingContent {
-    let content = FBSDKShareLinkContent()
+  internal var sdkSharingContentRepresentation: SharingContent {
+    let content = ShareLinkContent()
     content.quote = self.quote
-    content.contentURL = self.url
+    content.contentURL = self.url!
     content.hashtag = self.hashtag?.sdkHashtagRepresentation
-    content.peopleIDs = self.taggedPeopleIds
+    content.peopleIDs = self.taggedPeopleIds!
     content.placeID = self.placeId
     content.ref = self.referer
     return content

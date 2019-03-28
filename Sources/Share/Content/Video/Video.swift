@@ -36,14 +36,14 @@ public struct Video: Equatable {
     self.url = url
   }
 
-  internal var sdkVideoRepresentation: FBSDKShareVideo {
-    let sdkVideo = FBSDKShareVideo()
+  internal var sdkVideoRepresentation: ShareVideo {
+    let sdkVideo = ShareVideo()
     sdkVideo.videoURL = url
 
     return sdkVideo
   }
 
-  internal init?(sdkVideoRepresentation: FBSDKShareVideo) {
+  internal init?(sdkVideoRepresentation: ShareVideo) {
     guard let url = sdkVideoRepresentation.videoURL else {
       return nil
     }

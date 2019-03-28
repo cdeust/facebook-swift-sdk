@@ -34,8 +34,8 @@ internal enum OpenGraphPropertyValueConverter {
     case let value as NSNumber: return value
     case let value as NSArray: return value.compactMap { valueFrom(openGraphObjectValue: $0 as Any) }
     case let value as URL: return value
-    case let value as FBSDKSharePhoto: return Photo(sdkPhoto: value)
-    case let value as FBSDKShareOpenGraphObject: return OpenGraphObject(sdkGraphObject: value)
+    case let value as SharePhoto: return Photo(sdkPhoto: value)
+    case let value as ShareOpenGraphObject: return ShareOpenGraphObject(properties: value.allProperties) as? OpenGraphPropertyValue
     default:
       print("Recieved unknown OpenGraph value \(value)")
       return nil

@@ -70,8 +70,8 @@ public struct AppInvite: Equatable {
 
   // MARK: Internal
 
-  internal var sdkInviteRepresentation: FBSDKAppInviteContent {
-    let sdkContent = FBSDKAppInviteContent()
+  public var sdkInviteRepresentation: AppInviteContent {
+    let sdkContent = AppInviteContent()
     sdkContent.appLinkURL = appLink
     sdkContent.appInvitePreviewImageURL = previewImageURL
     sdkContent.promotionCode = promotion?.code.rawValue

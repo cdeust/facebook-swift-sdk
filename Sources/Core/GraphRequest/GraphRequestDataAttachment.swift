@@ -51,7 +51,7 @@ public class GraphRequestDataAttachment {
   // MARK: - Bridging
   //--------------------------------------
 
-  internal var sdkDataAttachment: FBSDKGraphRequestDataAttachment {
-    return FBSDKGraphRequestDataAttachment(data: data, filename: filename, contentType: contentType)
+  internal var sdkDataAttachment: GraphRequestDataAttachment {
+    return GraphRequestDataAttachment(data: data, filename: filename, contentType: contentType)
   }
 }

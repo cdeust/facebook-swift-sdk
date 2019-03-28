@@ -153,11 +153,11 @@ public struct UserProfile {
    */
   public static var current: UserProfile? {
     get {
-      let sdkProfile = FBSDKProfile.current() as FBSDKProfile?
+      let sdkProfile = Profile.current as Profile?
       return sdkProfile.map(UserProfile.init)
     }
     set {
-      FBSDKProfile.setCurrent(newValue?.sdkProfileRepresentation)
+      Profile.current = newValue?.sdkProfileRepresentation
     }
   }
 
@@ -171,7 +171,7 @@ public struct UserProfile {
    - parameter completion: The closure to be executed once the profile is loaded.
    */
   public static func loadCurrent(_ completion: Completion?) {
-    FBSDKProfile.loadCurrentProfile { (sdkProfile: FBSDKProfile?, error: Error?) in
+    Profile.loadCurrentProfile { (sdkProfile: Profile?, error: Error?) in
       if let completion = completion {
         let result = FetchResult(sdkProfile: sdkProfile, error: error)
         completion(result)
@@ -187,7 +187,7 @@ public struct UserProfile {
    */
   public static var updatesOnAccessTokenChange: Bool = false {
     didSet {
-      FBSDKProfile.enableUpdates(onAccessTokenChange: updatesOnAccessTokenChange)
+      Profile.enableUpdatesOnAccessTokenChange(updatesOnAccessTokenChange)
     }
   }
 
@@ -204,7 +204,7 @@ public struct UserProfile {
     /// The original picture's aspect ratio.
     case normal
 
-    internal var sdkPictureMode: FBSDKProfilePictureMode {
+    internal var sdkPictureMode: Profile.PictureMode {
       switch self {
       case .square: return .square
       case .normal: return .normal
@@ -219,14 +219,14 @@ public struct UserProfile {
    - parameter size: Requested height and width of the image. Will be rounded to integer precision.
    */
   public func imageURLWith(_ aspectRatio: PictureAspectRatio, size: CGSize) -> URL {
-    return sdkProfileRepresentation.imageURL(for: aspectRatio.sdkPictureMode, size: size)
+    return sdkProfileRepresentation.imageURL(forMode: aspectRatio.sdkPictureMode, size: size)!
   }
 
   //--------------------------------------
   // MARK: - Internal
   //--------------------------------------
 
-  internal init(sdkProfile: FBSDKProfile) {
+  internal init(sdkProfile: Profile) {
     self.init(userId: sdkProfile.userID,
               firstName: sdkProfile.firstName,
               middleName: sdkProfile.middleName,
@@ -236,8 +236,8 @@ public struct UserProfile {
               refreshDate: sdkProfile.refreshDate)
   }
 
-  internal var sdkProfileRepresentation: FBSDKProfile {
-    return FBSDKProfile(userID: userId,
+  internal var sdkProfileRepresentation: Profile {
+    return Profile(userID: userId,
                         firstName: firstName,
                         middleName: middleName,
                         lastName: lastName,

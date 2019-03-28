@@ -30,14 +30,14 @@ public extension AppInvite {
     /// Deliver via Messenger
     case messenger
 
-    internal init(sdkDestinationRepresentation: FBSDKAppInviteDestination) {
+    internal init(sdkDestinationRepresentation: AppInviteDestination) {
       switch sdkDestinationRepresentation {
       case .facebook: self = .facebook
       case .messenger: self = .messenger
       }
     }
 
-    internal var sdkDestinationRepresentation: FBSDKAppInviteDestination {
+    internal var sdkDestinationRepresentation: AppInviteDestination {
       switch self {
       case .facebook: return .facebook
       case .messenger: return .messenger

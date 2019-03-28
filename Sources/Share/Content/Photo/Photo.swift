@@ -62,8 +62,8 @@ public struct Photo: Equatable {
   }
 
   // MARK: Internal
-  internal var sdkPhotoRepresentation: FBSDKSharePhoto {
-    let photo = FBSDKSharePhoto()
+  internal var sdkPhotoRepresentation: SharePhoto {
+    let photo = SharePhoto()
     if let image = image {
         photo.image = image
     } else if let imageURL = url {
@@ -75,7 +75,7 @@ public struct Photo: Equatable {
     return photo
   }
 
-  internal init(sdkPhoto: FBSDKSharePhoto) {
+  internal init(sdkPhoto: SharePhoto) {
     self.image = sdkPhoto.image
     self.url = sdkPhoto.imageURL
     self.isUserGenerated = sdkPhoto.isUserGenerated

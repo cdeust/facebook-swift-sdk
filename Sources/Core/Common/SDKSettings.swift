@@ -24,7 +24,7 @@ import UIKit
 //--------------------------------------
 
 /// Current SDK version.
-public let SDKVersion = FBSDKSettings.sdkVersion()
+public let SDKVersion = Settings.sdkVersion
 
 //--------------------------------------
 // MARK: - SDKSettings
@@ -40,10 +40,10 @@ public enum SDKSettings {
    */
   public static var appId: String {
     get {
-      return FBSDKSettings.appID()
+      return Settings.appID
     }
     set {
-      FBSDKSettings.setAppID(newValue)
+      Settings.appID = newValue
     }
   }
 
@@ -53,10 +53,10 @@ public enum SDKSettings {
    */
   public static var appURLSchemeSuffix: String {
     get {
-      return FBSDKSettings.appURLSchemeSuffix()
+      return Settings.appURLSchemeSuffix
     }
     set {
-      FBSDKSettings.setAppURLSchemeSuffix(newValue)
+      Settings.appURLSchemeSuffix = newValue
     }
   }
 
@@ -68,10 +68,10 @@ public enum SDKSettings {
    */
   public static var clientToken: String? {
     get {
-      return FBSDKSettings.clientToken()
+      return Settings.clientToken
     }
     set {
-      FBSDKSettings.setClientToken(clientToken)
+      Settings.clientToken = clientToken
     }
   }
 
@@ -81,10 +81,10 @@ public enum SDKSettings {
    */
   public static var displayName: String? {
     get {
-      return FBSDKSettings.displayName()
+      return Settings.displayName
     }
     set {
-      FBSDKSettings.setDisplayName(newValue)
+      Settings.displayName = newValue
     }
   }
 
@@ -96,10 +96,10 @@ public enum SDKSettings {
    */
   public static var facebookSubdomain: String? {
     get {
-      return FBSDKSettings.facebookDomainPart()
+      return Settings.facebookDomainPart
     }
     set {
-      FBSDKSettings.setFacebookDomainPart(newValue)
+      Settings.facebookDomainPart = newValue
     }
   }
 
@@ -109,10 +109,10 @@ public enum SDKSettings {
    */
   public static var JPEGCompressionQuality: Double {
     get {
-      return Double(FBSDKSettings.jpegCompressionQuality())
+      return Double(Settings.jpegCompressionQuality)
     }
     set {
-      FBSDKSettings.setJPEGCompressionQuality(CGFloat(newValue))
+      Settings.jpegCompressionQuality = CGFloat(newValue)
     }
   }
 
@@ -123,10 +123,10 @@ public enum SDKSettings {
    */
   public static var limitedEventAndDataUsage: Bool {
     get {
-      return FBSDKSettings.limitEventAndDataUsage()
+      return Settings.shouldLimitEventAndDataUsage
     }
     set {
-      FBSDKSettings.setLimitEventAndDataUsage(newValue)
+      Settings.shouldLimitEventAndDataUsage = newValue
     }
   }
 
@@ -148,7 +148,7 @@ public enum SDKSettings {
       }
 
       #if swift(>=4.1)
-      let behaviors: [SDKLoggingBehavior] = FBSDKSettings.loggingBehaviors.compactMap(createBehavior)
+      let behaviors: [SDKLoggingBehavior] = Settings.loggingBehaviors.compactMap(createBehavior)
       #else
       let behaviors: [SDKLoggingBehavior] = FBSDKSettings.loggingBehavior().flatMap(createBehavior)
       #endif
@@ -157,7 +157,7 @@ public enum SDKSettings {
     }
     set {
       let behaviors = newValue.map { $0.sdkStringValue }
-      FBSDKSettings.setLoggingBehavior(Set(behaviors))
+      Settings.loggingBehaviors = Set(behaviors)
     }
   }
 
@@ -167,7 +167,7 @@ public enum SDKSettings {
    - parameter behavior: The behavior to enable
    */
   public static func enableLoggingBehavior(_ behavior: SDKLoggingBehavior) {
-    FBSDKSettings.enableLoggingBehavior(behavior.sdkStringValue)
+    Settings.enableLoggingBehavior(LoggingBehavior(rawValue: behavior.sdkStringValue))
   }
 
   /**
@@ -176,6 +176,6 @@ public enum SDKSettings {
    - parameter behavior: The behavior to disable.
    */
   public static func disableLoggingBehavior(_ behavior: SDKLoggingBehavior) {
-    FBSDKSettings.disableLoggingBehavior(behavior.sdkStringValue)
+    Settings.disableLoggingBehavior(LoggingBehavior(rawValue: behavior.sdkStringValue))
   }
 }

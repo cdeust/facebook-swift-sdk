@@ -20,38 +20,40 @@ import Foundation
 
 import FBSDKLoginKit
 
-internal class LoginButtonDelegateBridge: NSObject, FBSDKLoginButtonDelegate {
+internal class LoginButtonDelegateBridge: NSObject, LoginButtonDelegate {
+    
   internal weak var loginButton: LoginButton?
 
-  func setupAsDelegateFor(_ sdkLoginButton: FBSDKLoginButton, loginButton: LoginButton) {
+  func setupAsDelegateFor(_ sdkLoginButton: LoginButton, loginButton: LoginButton) {
     self.loginButton = loginButton
     sdkLoginButton.delegate = self
   }
 
-  // MARK: FBSDKLoginButtonDelegate
-
-  // swiftlint:disable:next implicitly_unwrapped_optional
-  func loginButton(_ sdkButton: FBSDKLoginButton!,
-                   didCompleteWith sdkResult: FBSDKLoginManagerLoginResult?,
-                   error: Error?) {
-    guard
-      let loginButton = loginButton,
-      let delegate = loginButton.delegate else {
+  /**
+   Called when the button was used to login and the process finished.
+   
+   - parameter loginButton: Button that was used to login.
+   - parameter result: The result of the login.
+   */
+  func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+    guard let delegate = loginButton.delegate else {
         return
     }
-
-    let result = LoginResult(sdkResult: sdkResult, error: error)
+    
+    let result = LoginResult(sdkResult: result as? LoginManagerLoginResult, error: nil)
     delegate.loginButtonDidCompleteLogin(loginButton, result: result)
   }
-
-  // swiftlint:disable:next implicitly_unwrapped_optional
-  func loginButtonDidLogOut(_ sdkButton: FBSDKLoginButton!) {
-    guard
-      let loginButton = loginButton,
-      let delegate = loginButton.delegate else {
+  
+  /**
+   Called when the button was used to logout.
+   
+   - parameter loginButton: Button that was used to logout.
+   */
+  func loginButtonDidLogOut(_ loginButton: LoginButton) {
+    guard let delegate = loginButton.delegate else {
         return
     }
-
+    
     delegate.loginButtonDidLogOut(loginButton)
   }
 }

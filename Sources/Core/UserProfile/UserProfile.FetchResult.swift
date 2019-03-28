@@ -28,7 +28,7 @@ public extension UserProfile {
     /// Profile fetch failed.
     case failed(Error)
 
-    internal init(sdkProfile: FBSDKProfile?, error: Error?) {
+    internal init(sdkProfile: Profile?, error: Error?) {
       if let error = error {
         self = .failed(error)
       } else if let sdkProfile = sdkProfile {

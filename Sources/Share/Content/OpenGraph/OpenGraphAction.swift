@@ -56,9 +56,8 @@ public struct OpenGraphAction: Equatable, OpenGraphPropertyContaining {
     }
   }
 
-  internal var sdkActionRepresentation: FBSDKShareOpenGraphAction {
-    let sdkAction = FBSDKShareOpenGraphAction()
-    sdkAction.actionType = type
+  internal var sdkActionRepresentation: ShareOpenGraphAction {
+    let sdkAction = ShareOpenGraphAction(type: type)
     sdkAction.parseProperties(properties.keyValueMap { key, value in
       (key.rawValue, value.openGraphPropertyValue)
     })
@@ -66,15 +65,11 @@ public struct OpenGraphAction: Equatable, OpenGraphPropertyContaining {
     return sdkAction
   }
 
-  internal init(sdkAction: FBSDKShareOpenGraphAction) {
+  internal init(sdkAction: ShareOpenGraphAction) {
     self.type = sdkAction.actionType
 
     var properties = [OpenGraphPropertyName: OpenGraphPropertyValue]()
-    sdkAction.enumerateKeysAndObjects { (key: String?, value: Any?, _) in
-      guard let key = key.map(OpenGraphPropertyName.init(rawValue:)),
-        let value = value.map(OpenGraphPropertyValueConverter.valueFrom) else {
-          return
-      }
+    for (key, value) in (sdkAction.allProperties.enumerated() as! [OpenGraphPropertyName : OpenGraphPropertyValue]) {
       properties[key] = value
     }
     self.properties = properties

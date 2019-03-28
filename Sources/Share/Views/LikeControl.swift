@@ -29,7 +29,7 @@ import UIKit
 
 @available(*, deprecated, message: "FBSDKLikeControl is deprecated")
 public class LikeControl: UIView {
-  private let sdkLikeControl: FBSDKLikeControl
+  private let sdkLikeControl: LikeControl
 
   /**
    Create a new LikeControl with an optional frame and object.
@@ -38,7 +38,7 @@ public class LikeControl: UIView {
    - parameter object: The object to like.
    */
   public init(frame: CGRect? = nil, object: LikableObject) {
-    let sdkLikeControl = FBSDKLikeControl()
+    let sdkLikeControl = LikeControl(frame: frame, object: object)
     let frame = frame ?? sdkLikeControl.bounds
 
     self.sdkLikeControl = sdkLikeControl
@@ -55,7 +55,7 @@ public class LikeControl: UIView {
    - parameter coder: The coder to initialize from.
    */
   public required init?(coder: NSCoder) {
-    sdkLikeControl = FBSDKLikeControl()
+    sdkLikeControl = LikeControl(coder: coder)!
 
     super.init(coder: coder)
     self.addSubview(sdkLikeControl)
@@ -64,22 +64,20 @@ public class LikeControl: UIView {
   /// The foreground color to use for the content of the control.
   public var foregroundColor: UIColor {
     get {
-      return sdkLikeControl.foregroundColor__deprecated
+      return sdkLikeControl.foregroundColor
     }
     set {
-      sdkLikeControl.foregroundColor__deprecated = newValue
+      sdkLikeControl.foregroundColor = newValue
     }
   }
 
   /// The object to like.
   public var object: LikableObject {
     get {
-      return LikableObject(sdkObjectType: sdkLikeControl.objectType, sdkObjectId: sdkLikeControl.objectID)
+      return LikableObject(sdkObjectType: sdkLikeControl.object.sdkObjectRepresntation.objectType, sdkObjectId: sdkLikeControl.object.sdkObjectRepresntation.objectId)
     }
     set {
       let sdkRepresentation = newValue.sdkObjectRepresntation
-      sdkLikeControl.objectType = sdkRepresentation.objectType
-      sdkLikeControl.objectID = sdkRepresentation.objectId
     }
   }
 
@@ -87,17 +85,11 @@ public class LikeControl: UIView {
   public var auxilaryStyle: AuxilaryStyle {
     get {
       return AuxilaryStyle(
-        sdkStyle: sdkLikeControl.likeControlStyle__deprecated,
-        sdkHorizontalAlignment: sdkLikeControl.likeControlHorizontalAlignment__deprecated,
-        sdkAuxilaryPosition: sdkLikeControl.likeControlAuxiliaryPosition__deprecated
+        sdkStyle: sdkLikeControl.auxilaryStyle.sdkStyleRepresentation.0, sdkHorizontalAlignment: sdkLikeControl.auxilaryStyle.horizontalAlignment, sdkAuxilaryPosition: sdkLikeControl.auxilaryStyle.sdkStyleRepresentation.2
       )
     }
     set {
-      (
-        sdkLikeControl.likeControlStyle__deprecated,
-        sdkLikeControl.likeControlHorizontalAlignment__deprecated,
-        sdkLikeControl.likeControlAuxiliaryPosition__deprecated
-      ) = newValue.sdkStyleRepresentation
+      sdkLikeControl.auxilaryStyle.self = newValue.self
     }
   }
 
@@ -110,10 +102,10 @@ public class LikeControl: UIView {
    */
   public var preferredMaxLayoutWidth: CGFloat {
     get {
-      return sdkLikeControl.preferredMaxLayoutWidth__deprecated
+      return sdkLikeControl.preferredMaxLayoutWidth
     }
     set {
-      sdkLikeControl.preferredMaxLayoutWidth__deprecated = newValue
+      sdkLikeControl.preferredMaxLayoutWidth = newValue
     }
   }
 

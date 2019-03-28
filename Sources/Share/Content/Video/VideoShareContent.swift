@@ -87,13 +87,12 @@ public struct VideoShareContent: ContentProtocol, Equatable, SDKBridgedContent {
 
   // MARK: SDKBridgedContent
 
-  var sdkSharingContentRepresentation: FBSDKSharingContent {
-    let sdkVideoContent = FBSDKShareVideoContent()
+  var sdkSharingContentRepresentation: SharingContent {
+    let sdkVideoContent = ShareVideoContent()
     sdkVideoContent.video = video.sdkVideoRepresentation
-    sdkVideoContent.previewPhoto = previewPhoto?.sdkPhotoRepresentation
-    sdkVideoContent.contentURL = url
-    sdkVideoContent.hashtag = hashtag?.sdkHashtagRepresentation
-    sdkVideoContent.peopleIDs = taggedPeopleIds
+    sdkVideoContent.contentURL = url!
+    sdkVideoContent.hashtag? = hashtag
+    sdkVideoContent.peopleIDs = taggedPeopleIds!
     sdkVideoContent.placeID = placeId
     sdkVideoContent.ref = referer
     return sdkVideoContent

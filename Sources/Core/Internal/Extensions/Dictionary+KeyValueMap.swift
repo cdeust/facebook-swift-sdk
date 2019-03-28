@@ -17,7 +17,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 extension Dictionary {
-  func keyValueMap<K, V>(_ transform: (Element) throws -> (K, V)) rethrows -> [K: V] {
+  public func keyValueMap<K, V>(_ transform: (Element) throws -> (K, V)) rethrows -> [K: V] {
     var dictionary: [K: V] = [:]
     try forEach {
       let transformed = try transform($0)
@@ -26,7 +26,7 @@ extension Dictionary {
     return dictionary
   }
 
-  func keyValueFlatMap<K, V>(_ transform: (Element) throws -> (K?, V?)) rethrows -> [K: V] {
+  public func keyValueFlatMap<K, V>(_ transform: (Element) throws -> (K?, V?)) rethrows -> [K: V] {
     var dictionary: [K: V] = [:]
     try forEach {
       let transformed = try transform($0)

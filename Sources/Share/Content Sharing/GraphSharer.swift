@@ -16,7 +16,6 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@testable import FacebookCore
 import FBSDKShareKit
 
 /**
@@ -29,7 +28,7 @@ import FBSDKShareKit
  */
 public final class GraphSharer<Content: ContentProtocol>: ContentSharingProtocol {
 
-  private let sdkSharer: FBSDKShareAPI
+  private let sdkSharer: ShareAPI
   private weak var sdkShareDelegate: SDKSharingDelegateBridge<Content>?
 
   /// The message the person has provided through the custom dialog that will accompany the share content.
@@ -48,7 +47,7 @@ public final class GraphSharer<Content: ContentProtocol>: ContentSharingProtocol
       return sdkSharer.graphNode
     }
     set {
-      sdkSharer.graphNode = newValue
+      sdkSharer.graphNode = newValue!
     }
   }
 
@@ -56,11 +55,11 @@ public final class GraphSharer<Content: ContentProtocol>: ContentSharingProtocol
   /// The access token must have the "publish_actions" permission granted.
   public var accessToken: AccessToken? {
     get {
-      let accessToken: FBSDKAccessToken? = sdkSharer.accessToken
-      return accessToken.flatMap(AccessToken.init)
+      let accessToken: AccessToken? = sdkSharer.accessToken
+      return try? accessToken.map { ($0 as AccessToken) }
     }
     set {
-      sdkSharer.accessToken = newValue.map { $0.sdkAccessTokenRepresentation }
+      sdkSharer.accessToken = newValue.map { ($0 as AccessToken) }
     }
   }
 
@@ -70,11 +69,8 @@ public final class GraphSharer<Content: ContentProtocol>: ContentSharingProtocol
    - parameter content: The content to share.
    */
   public init(content: Content) {
-    sdkSharer = FBSDKShareAPI()
     sdkShareDelegate = SDKSharingDelegateBridge()
-
-    sdkShareDelegate?.setupAsDelegateFor(sdkSharer)
-    sdkSharer.shareContent = ContentBridger.bridgeToObjC(content)
+    sdkSharer = ShareAPI(content: ContentBridger.bridgeToObjC(content)!, delegate: sdkShareDelegate)
   }
 
   //--------------------------------------

@@ -40,11 +40,11 @@ public extension GameRequest {
     /// Turn action type: It is the turn of the friends to play against the user in a match. (no object)
     case turn
 
-    internal var sdkActionRepresentation: (FBSDKGameRequestActionType, String?) {
+    internal var sdkActionRepresentation: (GameRequestActionType, String?) {
       switch self {
-      case .send(let objectId): return (FBSDKGameRequestActionType.send, objectId)
-      case .askFor(let objectId): return (FBSDKGameRequestActionType.askFor, objectId)
-      case .turn: return (FBSDKGameRequestActionType.turn, nil)
+      case .send(let objectId): return (GameRequestActionType.send, objectId)
+      case .askFor(let objectId): return (GameRequestActionType.askFor, objectId)
+      case .turn: return (GameRequestActionType.turn, nil)
       }
     }
   }

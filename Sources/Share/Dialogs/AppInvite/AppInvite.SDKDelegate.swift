@@ -16,28 +16,27 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@testable import FacebookCore
-
+import FBSDKCoreKit
 import FBSDKShareKit
 
 extension AppInvite {
-  internal class SDKDelegate: NSObject, FBSDKAppInviteDialogDelegate {
+  public class SDKDelegate: NSObject {
     internal var completion: ((Result) -> Void)?
 
-    func setupAsDelegateFor(_ dialog: FBSDKAppInviteDialog) {
+    func setupAsDelegateFor(_ dialog: AppInvite.Dialog) {
       // We need for the connection to retain us,
       // so we can stick around and keep calling into handlers,
       // as long as the connection is alive/sending messages.
       objc_setAssociatedObject(dialog, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN)
-      dialog.delegate = self
+      dialog.sdkDelegate = self
     }
 
-    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog?,
+    func appInviteDialog(_ appInviteDialog: AppInvite.Dialog?,
                          didCompleteWithResults results: [AnyHashable: Any]?) {
       completion?(.success(results?.keyValueFlatMap { ($0 as? String, $1 as? String) } ?? [:]))
     }
 
-    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog?, didFailWithError error: Error) {
+    func appInviteDialog(_ appInviteDialog: AppInvite.Dialog?, didFailWithError error: Error) {
       completion?(.failed(error))
     }
   }

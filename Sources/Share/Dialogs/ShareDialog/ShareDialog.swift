@@ -20,7 +20,7 @@ import FBSDKShareKit
 
 /// A dialog for sharing content on Facebook.
 public final class ShareDialog<Content: ContentProtocol>: ContentSharingProtocol, ContentSharingDialogProtocol {
-  private let sdkSharer: FBSDKShareDialog
+  private let sdkSharer: ShareDialog
   private var sdkShareDelegate: SDKSharingDelegateBridge<Content>?
 
   /**
@@ -30,10 +30,10 @@ public final class ShareDialog<Content: ContentProtocol>: ContentSharingProtocol
    */
   public var presentingViewController: UIViewController? {
     get {
-      return sdkSharer.fromViewController
+      return sdkSharer.presentingViewController
     }
     set {
-      sdkSharer.fromViewController = newValue
+      sdkSharer.presentingViewController = newValue
     }
   }
 
@@ -57,18 +57,17 @@ public final class ShareDialog<Content: ContentProtocol>: ContentSharingProtocol
    - parameter content: The content to share.
    */
   public init(content: Content) {
-    sdkSharer = FBSDKShareDialog()
+    sdkSharer = ShareDialog(content: ContentBridger.bridgeToSwift(content as! SharingContent)!)
     sdkShareDelegate = SDKSharingDelegateBridge<Content>()
 
-    sdkShareDelegate?.setupAsDelegateFor(sdkSharer)
-    sdkSharer.shareContent = ContentBridger.bridgeToObjC(content)
+    sdkShareDelegate?.setupAsDelegateFor(sdkSharer as! Sharing)
   }
 
   // MARK: ContentSharingProtocol
 
   /// The content that is being shared.
   public var content: Content {
-    guard let swiftContent: Content = ContentBridger.bridgeToSwift(sdkSharer.shareContent) else {
+    guard let swiftContent: Content = ContentBridger.bridgeToSwift(sdkSharer.content as! SharingContent) else {
       fatalError("Content of our private share dialog has changed type. Something horrible has happened.")
     }
     return swiftContent
@@ -87,10 +86,10 @@ public final class ShareDialog<Content: ContentProtocol>: ContentSharingProtocol
   /// Whether or not this sharer fails on invalid data.
   public var failsOnInvalidData: Bool {
     get {
-      return sdkSharer.shouldFailOnDataError
+      return sdkSharer.failsOnInvalidData
     }
     set {
-      sdkSharer.shouldFailOnDataError = newValue
+      sdkSharer.failsOnInvalidData = newValue
     }
   }
 
@@ -118,7 +117,7 @@ public final class ShareDialog<Content: ContentProtocol>: ContentSharingProtocol
       }
     }
 
-    sdkSharer.show()
+    try sdkSharer.show()
     sdkShareDelegate?.completion = completionHandler
 
     if let error = error {

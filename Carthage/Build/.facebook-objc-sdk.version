@@ -7,15 +7,15 @@
   ],
   "tvOS" : [
     {
-      "name" : "FBSDKCoreKit",
-      "hash" : "d19014aa5e22e2decc35d9e9acdc513106ca0fb5b6974421402e8a874d24d12a"
+      "name" : "FBSDKTVOSKit",
+      "hash" : "dc241e611cd852cf4fa071525dbb0e60e66f8b5b93e70fd6770baf594b366ef7"
     }
   ],
-  "commitish" : "v4.42.0",
+  "commitish" : "53cb19696c56f946b4154dde5c08a0cb58390372",
   "iOS" : [
     {
-      "name" : "FBSDKCoreKit",
-      "hash" : "0911f0cc10bb3dfa7affd758427ac09bab982767d29284a3480510dab603c87d"
+      "name" : "FBSDKPlacesKit",
+      "hash" : "3cc54cac6cd4235a8de5d9a1d37667b0c579e60d970c04f37432365415e8b540"
     }
   ]
 }

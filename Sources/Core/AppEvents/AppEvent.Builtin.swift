@@ -53,7 +53,7 @@ public extension AppEvent {
                                 valueToSum: Double? = nil,
                                 extraParameters: ParametersDictionary = [:]) -> AppEvent {
     var parameters = extraParameters
-    successful.onSome { parameters[.successful] = $0 ? FBSDKAppEventParameterValueYes : FBSDKAppEventParameterValueNo }
+    successful.onSome { parameters[.successful] = $0 ? AppEvents.ParameterValue.yes as! AppEventParameterValueType : AppEvents.ParameterValue.no as! AppEventParameterValueType }
     return AppEvent(name: .completedTutorial, parameters: parameters, valueToSum: valueToSum)
   }
 
@@ -108,7 +108,7 @@ public extension AppEvent {
     contentData.onSome { parameters[.content] = $0 }
     contentType.onSome { parameters[.contentType] = $0 }
     searchedString.onSome { parameters[.searchedString] = $0 }
-    successful.onSome { parameters[.successful] = $0 ? FBSDKAppEventParameterValueYes : FBSDKAppEventParameterValueNo }
+    successful.onSome { parameters[.successful] = $0 ? AppEvents.ParameterValue.yes as! AppEventParameterValueType : AppEvents.ParameterValue.no as! AppEventParameterValueType }
     return AppEvent(name: .searched, parameters: parameters, valueToSum: valueToSum)
   }
 
@@ -227,7 +227,7 @@ public extension AppEvent {
                                valueToSum: Double? = nil,
                                extraParameters: ParametersDictionary = [:]) -> AppEvent {
     var parameters = extraParameters
-    successful.onSome { parameters[.successful] = $0 ? FBSDKAppEventParameterValueYes : FBSDKAppEventParameterValueNo }
+    successful.onSome { parameters[.successful] = $0 ? AppEvents.ParameterValue.yes as! AppEventParameterValueType : AppEvents.ParameterValue.no as! AppEventParameterValueType }
     return AppEvent(name: .addedPaymentInfo, parameters: parameters, valueToSum: valueToSum)
   }
 
@@ -259,7 +259,7 @@ public extension AppEvent {
     contentData.onSome { parameters[.content] = $0 }
     itemCount.onSome { parameters[.itemCount] = NSNumber(value: UInt64($0)) }
     paymentInfoAvailable.onSome {
-      parameters[.paymentInfoAvailable] = $0 ? FBSDKAppEventParameterValueYes : FBSDKAppEventParameterValueNo
+      parameters[.paymentInfoAvailable] = $0 ? AppEvents.ParameterValue.yes as! AppEventParameterValueType : AppEvents.ParameterValue.no as! AppEventParameterValueType
     }
     currency.onSome { parameters[.currency] = $0 }
     return AppEvent(name: .initiatedCheckout, parameters: parameters, valueToSum: valueToSum)

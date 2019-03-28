@@ -82,12 +82,12 @@ public struct PhotoShareContent: ContentProtocol, Equatable, SDKBridgedContent {
 
   // MARK: SDKBridgedContent
 
-  var sdkSharingContentRepresentation: FBSDKSharingContent {
-    let sdkPhotoContent = FBSDKSharePhotoContent()
+  var sdkSharingContentRepresentation: SharingContent {
+    let sdkPhotoContent = SharePhotoContent()
     sdkPhotoContent.photos = photos.map { $0.sdkPhotoRepresentation }
-    sdkPhotoContent.contentURL = url
-    sdkPhotoContent.hashtag = hashtag?.sdkHashtagRepresentation
-    sdkPhotoContent.peopleIDs = taggedPeopleIds
+    sdkPhotoContent.contentURL = url!
+    sdkPhotoContent.hashtag = hashtag
+    sdkPhotoContent.peopleIDs = taggedPeopleIds!
     sdkPhotoContent.placeID = placeId
     sdkPhotoContent.ref = referer
     return sdkPhotoContent

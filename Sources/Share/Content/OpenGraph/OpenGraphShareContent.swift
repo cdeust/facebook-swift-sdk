@@ -88,13 +88,13 @@ public struct OpenGraphShareContent: Equatable, SDKBridgedContent, ContentProtoc
 
   // MARK: SDKBridgedContent
 
-  internal var sdkSharingContentRepresentation: FBSDKSharingContent {
-    let sdkContent = FBSDKShareOpenGraphContent()
-    sdkContent.action = action?.sdkActionRepresentation
-    sdkContent.previewPropertyName = previewPropertyName?.rawValue
-    sdkContent.contentURL = url
+  internal var sdkSharingContentRepresentation: SharingContent {
+    let sdkContent = ShareOpenGraphContent()
+    sdkContent.action = action!.sdkActionRepresentation
+    sdkContent.previewPropertyName = previewPropertyName!.rawValue
+    sdkContent.contentURL = url!
     sdkContent.hashtag = hashtag?.sdkHashtagRepresentation
-    sdkContent.peopleIDs = taggedPeopleIds
+    sdkContent.peopleIDs = taggedPeopleIds!
     sdkContent.placeID = placeId
     sdkContent.ref = referer
     return sdkContent

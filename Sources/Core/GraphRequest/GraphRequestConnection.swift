@@ -57,11 +57,11 @@ public class GraphRequestConnection {
   /// The operation queue that is used to call all network handlers.
   public var networkHandlerQueue: OperationQueue = OperationQueue.main {
     didSet {
-      sdkConnection.setDelegateQueue(networkHandlerQueue)
+      sdkConnection.networkHandlerQueue = networkHandlerQueue
     }
   }
 
-  private var sdkConnection: FBSDKGraphRequestConnection = FBSDKGraphRequestConnection()
+  private var sdkConnection: GraphRequestConnection = GraphRequestConnection()
   private var sdkDelegateBridge: GraphRequestConnectionDelegateBridge = GraphRequestConnectionDelegateBridge()
 
   /**
@@ -107,9 +107,7 @@ public class GraphRequestConnection {
   public func add<T>(_ request: T,
                      batchParameters: [String: Any]?,
                      completion: Completion<T>? = nil) {
-    sdkConnection.add(request.sdkRequest,
-                      batchParameters: batchParameters,
-                      completionHandler: completion.map(type(of: self).sdkRequestCompletion))
+    sdkConnection.add(request, batchParameters: batchParameters as [String : Any]?, completion: completion)
   }
 
   /**
@@ -138,10 +136,10 @@ public class GraphRequestConnection {
 
   /// Custom typealias that is the same as FBSDKGraphRequestHandler, but without implicitly unwrapped optionals.
   internal typealias SDKRequestCompletion =
-    (_ connection: FBSDKGraphRequestConnection?, _ rawResponse: Any?, _ error: Error?) -> Void
+    (_ connection: GraphRequestConnection?, _ rawResponse: Any?, _ error: Error?) -> Void
 
   internal static func sdkRequestCompletion<T>(from completion: @escaping Completion<T>) -> SDKRequestCompletion {
-    return { connection, rawResponse, error in
+    return { (connection, rawResponse, error) in
       let result: GraphRequestResult<T> = {
         switch error {
         case let error?:
@@ -150,7 +148,7 @@ public class GraphRequestConnection {
           return .success(response: T.Response(rawResponse: rawResponse))
         }
       }()
-      completion(connection?.urlResponse, result)
+      completion(connection as! HTTPURLResponse, result)
     }
   }
 }

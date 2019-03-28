@@ -21,7 +21,7 @@ import FBSDKShareKit
 public extension GameRequest {
   /// A dialog for sending game requests.
   final class Dialog {
-    private let sdkDialog: FBSDKGameRequestDialog
+    private let sdkDialog: GameRequestDialog
     private weak var sdkDelegate: SDKDelegate?
 
     /// The content for the game request.
@@ -37,10 +37,10 @@ public extension GameRequest {
     /// Specifies whether frictionless requests are enabled.
     public var frictionlessRequestsEnabled: Bool {
       get {
-        return sdkDialog.frictionlessRequestsEnabled
+        return sdkDialog.isFrictionlessRequestsEnabled
       }
       set {
-        sdkDialog.frictionlessRequestsEnabled = false
+        sdkDialog.isFrictionlessRequestsEnabled = false
       }
     }
 
@@ -52,11 +52,7 @@ public extension GameRequest {
     public init(request: GameRequest) {
       self.request = request
 
-      sdkDialog = FBSDKGameRequestDialog()
-      sdkDelegate = SDKDelegate()
-
-      sdkDelegate?.setupAsDelegateFor(sdkDialog)
-      sdkDialog.content = request.sdkContentRepresentation
+      sdkDialog = GameRequestDialog(content: request.sdkContentRepresentation, delegate: SDKDelegate() as? GameRequestDialogDelegate)
     }
 
     /**

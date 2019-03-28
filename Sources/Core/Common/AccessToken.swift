@@ -86,11 +86,11 @@ public struct AccessToken {
    */
   public static var current: AccessToken? {
     get {
-      let token = FBSDKAccessToken.current() as FBSDKAccessToken?
+      let token = AccessToken.current as AccessToken?
       return token.map(AccessToken.init)
     }
     set {
-      FBSDKAccessToken.setCurrent(newValue?.sdkAccessTokenRepresentation)
+      AccessToken.current = newValue?.sdkAccessTokenRepresentation
     }
   }
 
@@ -103,8 +103,8 @@ public struct AccessToken {
    - parameter completion: Optional completion to call when the token was refreshed or failed.
    */
   public static func refreshCurrentToken(_ completion: ((AccessToken?, Error?) -> Void)? = nil) {
-    FBSDKAccessToken.refreshCurrentAccessToken { (_, _, error: Error?) in
-      completion?(self.current, error)
+    AccessToken.refreshCurrentToken { (accessToken: AccessToken?,  error: Error?) in
+      completion?(accessToken, error)
     }
   }
 
@@ -112,30 +112,24 @@ public struct AccessToken {
   // MARK: - Internal
   //--------------------------------------
 
-  internal init(sdkAccessToken: FBSDKAccessToken) {
-    self.init(appId: sdkAccessToken.appID,
-              authenticationToken: sdkAccessToken.tokenString,
-              userId: sdkAccessToken.userID,
+  internal init(sdkAccessToken: AccessToken) {
+    self.init(appId: sdkAccessToken.appId,
+              authenticationToken: sdkAccessToken.authenticationToken,
+              userId: sdkAccessToken.userId,
               refreshDate: sdkAccessToken.refreshDate,
               expirationDate: sdkAccessToken.expirationDate,
               grantedPermissions: sdkAccessToken.grantedSwiftPermissions,
               declinedPermissions: sdkAccessToken.declinedSwiftPermissions)
   }
 
-  internal var sdkAccessTokenRepresentation: FBSDKAccessToken {
-    return FBSDKAccessToken(tokenString: authenticationToken,
-                            permissions: grantedPermissions?.map { $0.name },
-                            declinedPermissions: declinedPermissions?.map { $0.name },
-                            appID: appId,
-                            userID: userId,
-                            expirationDate: expirationDate,
-                            refreshDate: refreshDate)
+  internal var sdkAccessTokenRepresentation: AccessToken {
+    return AccessToken(appId: appId, authenticationToken: authenticationToken, userId: userId, refreshDate: refreshDate, expirationDate: expirationDate, grantedPermissions: grantedPermissions, declinedPermissions: declinedPermissions)
   }
 }
 
-private extension FBSDKAccessToken {
+private extension AccessToken {
   var grantedSwiftPermissions: Set<Permission>? {
-    return (permissions?.compactMap { $0 as? String }.map { Permission(name: $0) }).map(Set.init)
+    return (grantedPermissions?.compactMap { $0 as? String }.map { Permission(name: $0) }).map(Set.init)
   }
 
   var declinedSwiftPermissions: Set<Permission>? {

@@ -21,7 +21,7 @@ import FBSDKShareKit
 /// A dialog for sharing content through Messenger.
 public final class MessageDialog<Content: ContentProtocol>: ContentSharingProtocol, ContentSharingDialogProtocol {
 
-  private let sdkSharer: FBSDKMessageDialog
+  private let sdkSharer: MessageDialog
   private weak var sdkShareDelegate: SDKSharingDelegateBridge<Content>?
 
   /**
@@ -30,18 +30,16 @@ public final class MessageDialog<Content: ContentProtocol>: ContentSharingProtoc
    - parameter content: The content to share.
    */
   public init(content: Content) {
-    sdkSharer = FBSDKMessageDialog()
+    sdkSharer = MessageDialog(content: ContentBridger.bridgeToSwift(content as! SharingContent)!)
     sdkShareDelegate = SDKSharingDelegateBridge<Content>()
-
-    sdkShareDelegate?.setupAsDelegateFor(sdkSharer)
-    sdkSharer.shareContent = ContentBridger.bridgeToObjC(content)
+    sdkShareDelegate?.setupAsDelegateFor(sdkSharer as! Sharing)
   }
 
   // MARK: ContentSharingProtocol
 
   /// The content that is being shared.
   public var content: Content {
-    guard let swiftContent: Content = ContentBridger.bridgeToSwift(sdkSharer.shareContent) else {
+    guard let swiftContent: Content = ContentBridger.bridgeToSwift(sdkSharer.content as! SharingContent) else {
       fatalError("Content of our private share dialog has changed type. Something horrible has happened.")
     }
     return swiftContent
@@ -60,10 +58,10 @@ public final class MessageDialog<Content: ContentProtocol>: ContentSharingProtoc
   /// Whether or not this sharer fails on invalid data.
   public var failsOnInvalidData: Bool {
     get {
-      return sdkSharer.shouldFailOnDataError
+      return sdkSharer.failsOnInvalidData
     }
     set {
-      sdkSharer.shouldFailOnDataError = newValue
+      sdkSharer.failsOnInvalidData = newValue
     }
   }
 
@@ -91,7 +89,7 @@ public final class MessageDialog<Content: ContentProtocol>: ContentSharingProtoc
       }
     }
 
-    sdkSharer.show()
+    try sdkSharer.show()
     sdkShareDelegate?.completion = completionHandler
 
     if let error = error {

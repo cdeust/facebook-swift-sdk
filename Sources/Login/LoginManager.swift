@@ -16,10 +16,11 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@testable import FacebookCore
 import FBSDKLoginKit
 import Foundation
 import UIKit
+
+@testable import FacebookCore
 
 /**
  This class provides methods for logging the user in and out.
@@ -33,7 +34,7 @@ import UIKit
  `current` before calling `logIn()` to authorize further permissions on your tokens.
  */
 public final class LoginManager {
-  private let sdkManager: FBSDKLoginManager = FBSDKLoginManager()
+  private let sdkManager: LoginManager = LoginManager()
 
   /// The login behavior that is going to be used. Default: `.Native`.
   public var loginBehavior: LoginBehavior {
@@ -45,7 +46,7 @@ public final class LoginManager {
   /// The default audience. Default: `.Friends`.
   public var defaultAudience: LoginDefaultAudience {
     didSet {
-      sdkManager.defaultAudience = defaultAudience.sdkAudience
+      sdkManager.defaultAudience = defaultAudience
     }
   }
 
@@ -60,7 +61,7 @@ public final class LoginManager {
     self.loginBehavior = loginBehavior
     self.defaultAudience = defaultAudience
     sdkManager.loginBehavior = loginBehavior.sdkBehavior
-    sdkManager.defaultAudience = defaultAudience.sdkAudience
+    sdkManager.defaultAudience = defaultAudience
   }
 
   /**
@@ -80,10 +81,10 @@ public final class LoginManager {
   public func logIn(readPermissions: [ReadPermission] = [.publicProfile],
                     viewController: UIViewController? = nil,
                     completion: ((LoginResult) -> Void)? = nil) {
-    let sdkPermissions = readPermissions.map { $0.permissionValue.name }
-    sdkManager.logIn(withReadPermissions: sdkPermissions,
-                     from: viewController,
-                     handler: LoginManager.sdkCompletionFor(completion))
+    let sdkPermissions = readPermissions.map { $0.permissionValue } as? [ReadPermission]
+    sdkManager.logIn(readPermissions: sdkPermissions!,
+                     viewController: viewController,
+                     completion: completion)
   }
 
   /**
@@ -103,10 +104,10 @@ public final class LoginManager {
   public func logIn(publishPermissions: [PublishPermission] = [.publishActions],
                     viewController: UIViewController? = nil,
                     completion: ((LoginResult) -> Void)? = nil) {
-    let sdkPermissions = publishPermissions.map { $0.permissionValue.name }
-    sdkManager.logIn(withPublishPermissions: sdkPermissions,
-                     from: viewController,
-                     handler: LoginManager.sdkCompletionFor(completion))
+    let sdkPermissions = publishPermissions.map { $0.permissionValue } as? [PublishPermission]
+    sdkManager.logIn(publishPermissions: sdkPermissions!,
+                     viewController: viewController,
+                     completion: completion)
   }
 
   /**
@@ -114,16 +115,16 @@ public final class LoginManager {
    This calls `AccessToken.current = nil` and `Profile.current = nil`.
    */
   public func logOut() {
-    AccessToken.current = nil
+    FBSDKCoreKit.AccessToken.current = nil
     UserProfile.current = nil
 
   }
 
-  private class func sdkCompletionFor(_ completion: ((LoginResult) -> Void)?) -> FBSDKLoginManagerRequestTokenHandler? {
+  private class func sdkCompletionFor(_ completion: ((LoginResult) -> Void)?) -> LoginManagerLoginResultBlock? {
     guard let completion = completion else {
       return nil
     }
-    return { (sdkResult: FBSDKLoginManagerLoginResult?, error: Error?) -> Void in
+    return { (sdkResult: LoginManagerLoginResult?, error: Error?) -> Void in
       let result = LoginResult(sdkResult: sdkResult, error: error)
       completion(result)
     }

@@ -31,7 +31,7 @@ public extension LoginButton {
     /// Force disable the tooltip.
     case disable
 
-    internal var sdkBehavior: FBSDKLoginButtonTooltipBehavior {
+    internal var sdkBehavior: FBLoginButton.TooltipBehavior {
       switch self {
       case .automatic: return .automatic
       case .forceDisplay: return .forceDisplay
@@ -51,7 +51,7 @@ public extension LoginButton {
     /// Dark gray background, white text, light gray close button.
     case neutralGray
 
-    internal var sdkColorStyle: FBSDKTooltipColorStyle {
+    internal var sdkColorStyle: FBTooltipView.ColorStyle {
       switch self {
       case .friendlyBlue: return .friendlyBlue
       case .neutralGray: return .neutralGray

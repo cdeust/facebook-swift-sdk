@@ -23,7 +23,7 @@ import Foundation
  A button for sharing content.
  */
 public class ShareButton<C: ContentProtocol>: UIView {
-  private var sdkShareButton: FBSDKShareButton
+  private var sdkShareButton: FBShareButton
 
   /// The content to share.
   public var content: C? = nil {
@@ -39,7 +39,7 @@ public class ShareButton<C: ContentProtocol>: UIView {
    - parameter content: The content to share.
    */
   public init(frame: CGRect? = nil, content: C? = nil) {
-    let sdkShareButton = FBSDKShareButton()
+    let sdkShareButton = FBShareButton()
     let frame = frame ?? sdkShareButton.bounds
 
     self.sdkShareButton = sdkShareButton

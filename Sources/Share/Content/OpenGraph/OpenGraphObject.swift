@@ -63,21 +63,17 @@ public struct OpenGraphObject: OpenGraphPropertyContaining {
     }
   }
 
-  internal var sdkGraphObjectRepresentation: FBSDKShareOpenGraphObject {
-    let sdkObject = FBSDKShareOpenGraphObject()
+  internal var sdkGraphObjectRepresentation: ShareOpenGraphObject {
+    let sdkObject = ShareOpenGraphObject()
     sdkObject.parseProperties(properties.keyValueMap { key, value in
       (key.rawValue, value.openGraphPropertyValue)
     })
     return sdkObject
   }
 
-  internal init(sdkGraphObject: FBSDKShareOpenGraphObject) {
+  internal init(sdkGraphObject: ShareOpenGraphObject) {
     var properties = [OpenGraphPropertyName: OpenGraphPropertyValue]()
-    sdkGraphObject.enumerateKeysAndObjects { (key: String?, value: Any?, _) in
-      guard let key = key.map(OpenGraphPropertyName.init(rawValue:)),
-        let value = value.map(OpenGraphPropertyValueConverter.valueFrom) else {
-          return
-      }
+    for (key, value) in (sdkGraphObject.allProperties.enumerated() as! [OpenGraphPropertyName : OpenGraphPropertyValue]) {
       properties[key] = value
     }
     self.properties = properties

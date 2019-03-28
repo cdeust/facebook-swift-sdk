@@ -35,7 +35,7 @@ public extension AppEventsLogger {
      */
     case explicitOnly
 
-    internal init(sdkFlushBehavior: FBSDKAppEventsFlushBehavior) {
+    internal init(sdkFlushBehavior: AppEvents.FlushBehavior) {
       switch sdkFlushBehavior {
       case .auto: self = .auto
       case .explicitOnly: self = .explicitOnly
@@ -44,7 +44,7 @@ public extension AppEventsLogger {
       }
     }
 
-    internal var sdkFlushBehavior: FBSDKAppEventsFlushBehavior {
+    internal var sdkFlushBehavior: AppEvents.FlushBehavior {
       switch self {
       case .auto: return .auto
       case .explicitOnly: return .explicitOnly

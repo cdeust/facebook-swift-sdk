@@ -44,7 +44,7 @@ public extension LikeControl {
       /// The auxilary view should be placed to the right of the like button.
       case right
 
-      internal init(sdkHorizontalAlignment: FBSDKLikeControlHorizontalAlignment) {
+      internal init(sdkHorizontalAlignment: LikeControl.AuxilaryStyle.HorizontalAlignment) {
         switch sdkHorizontalAlignment {
         case .left: self = .left
         case .center: self = .center
@@ -52,7 +52,7 @@ public extension LikeControl {
         }
       }
 
-      internal var sdkHorizontalAlignment: FBSDKLikeControlHorizontalAlignment {
+      internal var sdkHorizontalAlignment: LikeControl.AuxilaryStyle.HorizontalAlignment {
         switch self {
         case .left: return .left
         case .center: return .center
@@ -74,7 +74,7 @@ public extension LikeControl {
       /// The auxilary view should be placed below the like button.
       case bottom
 
-      internal init(sdkAuxilaryPosition: FBSDKLikeControlAuxiliaryPosition) {
+      internal init(sdkAuxilaryPosition: LikeControl.AuxilaryStyle.VerticalAlignment) {
         switch sdkAuxilaryPosition {
         case .top: self = .top
         case .inline: self = .inline
@@ -82,7 +82,7 @@ public extension LikeControl {
         }
       }
 
-      internal var sdkAuxilaryPosition: FBSDKLikeControlAuxiliaryPosition {
+      internal var sdkAuxilaryPosition: LikeControl.AuxilaryStyle.VerticalAlignment {
         switch self {
         case .top: return .top
         case .inline: return .inline
@@ -130,11 +130,11 @@ public extension LikeControl {
     }
 
     internal typealias SDKStyleRepresentation =
-      (FBSDKLikeControlStyle, FBSDKLikeControlHorizontalAlignment, FBSDKLikeControlAuxiliaryPosition)
+      (LikeControl.AuxilaryStyle, LikeControl.AuxilaryStyle.HorizontalAlignment, LikeControl.AuxilaryStyle.VerticalAlignment)
 
-    internal init(sdkStyle: FBSDKLikeControlStyle,
-                  sdkHorizontalAlignment: FBSDKLikeControlHorizontalAlignment,
-                  sdkAuxilaryPosition: FBSDKLikeControlAuxiliaryPosition) {
+    internal init(sdkStyle: LikeControl.AuxilaryStyle,
+                  sdkHorizontalAlignment: LikeControl.AuxilaryStyle.HorizontalAlignment,
+                  sdkAuxilaryPosition: LikeControl.AuxilaryStyle.VerticalAlignment) {
       let horizontalAlignment = HorizontalAlignment(sdkHorizontalAlignment: sdkHorizontalAlignment)
       let verticalAlignment = VerticalAlignment(sdkAuxilaryPosition: sdkAuxilaryPosition)
 
@@ -144,12 +144,12 @@ public extension LikeControl {
       }
     }
 
-    internal var sdkStyleRepresentation: SDKStyleRepresentation {
+    internal var sdkStyleRepresentation: LikeControl.AuxilaryStyle.SDKStyleRepresentation {
       switch self {
       case let .standard(horizontal, vertical):
-        return (.standard, horizontal.sdkHorizontalAlignment, vertical.sdkAuxilaryPosition)
+        return (.standard(horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment), horizontalAlignment: horizontal.sdkHorizontalAlignment, verticalAlignment: vertical.sdkAuxilaryPosition)
       case let .boxCount(horizontal, vertical):
-        return (.boxCount, horizontal.sdkHorizontalAlignment, vertical.sdkAuxilaryPosition)
+        return (.boxCount(horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment), horizontalAlignment: horizontal.sdkHorizontalAlignment, verticalAlignment: vertical.sdkAuxilaryPosition)
       }
     }
 

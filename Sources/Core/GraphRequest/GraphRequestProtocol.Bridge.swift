@@ -20,7 +20,7 @@ import FBSDKCoreKit.FBSDKGraphRequest
 import Foundation
 
 extension GraphRequestProtocol {
-  internal var sdkRequest: FBSDKGraphRequest {
+  internal var sdkRequest: GraphRequest {
     // TODO: (nlutsenko) Consider constraining `parameters` for specific types aka create `GraphRequestParameterValue`
     let sdkParameters: [String: Any]? = parameters?.keyValueMap { key, value in
       if let value = value as? GraphRequestDataAttachment {
@@ -31,10 +31,6 @@ extension GraphRequestProtocol {
 
     // ObjC SDK requires `v` as a prefix for the Graph API Version.
     let apiVersion = "v" + self.apiVersion.stringValue
-    return FBSDKGraphRequest(graphPath: graphPath,
-                             parameters: sdkParameters,
-                             tokenString: accessToken?.authenticationToken,
-                             version: apiVersion,
-                             httpMethod: httpMethod.rawValue)
+    return GraphRequest(graphPath: graphPath, parameters: sdkParameters as! [String : Any], accessToken: accessToken, httpMethod: httpMethod, apiVersion: self.apiVersion)
   }
 }

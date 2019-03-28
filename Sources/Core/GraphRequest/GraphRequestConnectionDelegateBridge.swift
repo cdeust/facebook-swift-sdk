@@ -19,30 +19,26 @@
 import FBSDKCoreKit.FBSDKGraphRequestConnection
 import Foundation
 
-internal class GraphRequestConnectionDelegateBridge: NSObject, FBSDKGraphRequestConnectionDelegate {
+internal class GraphRequestConnectionDelegateBridge: NSObject, GraphRequestConnectionDelegate {
   var networkFailureHandler: GraphRequestConnection.NetworkFailureHandler?
   var networkProgressHandler: GraphRequestConnection.NetworkProgressHandler?
 
-  func setupAsDelegateFor(_ connection: FBSDKGraphRequestConnection) {
+  func setupAsDelegateFor(_ connection: GraphRequestConnection) {
     // We need for the connection to retain us,
     // so we can stick around and keep calling into handlers,
     // as long as the connection is alive/sending messages.
     objc_setAssociatedObject(connection, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN)
-    connection.delegate = self
   }
 
   // MARK: FBSDKGraphRequestConnectionDelegate
 
   // swiftlint:disable:next implicitly_unwrapped_optional
-  func requestConnection(_ connection: FBSDKGraphRequestConnection!,
-                         didSendBodyData bytesWritten: Int,
-                         totalBytesWritten: Int,
-                         totalBytesExpectedToWrite: Int) {
+  private func requestConnection(_ connection: GraphRequestConnection, didSendBodyData bytesWritten: Int, totalBytesWritten: Int, totalBytesExpectedToWrite: Int) {
     networkProgressHandler?(Int64(bytesWritten), Int64(totalBytesWritten), Int64(totalBytesExpectedToWrite))
   }
 
   // swiftlint:disable:next implicitly_unwrapped_optional
-  func requestConnection(_ connection: FBSDKGraphRequestConnection!, didFailWithError error: Error!) {
+  private func requestConnection(_ connection: GraphRequestConnection, didFailWithError error: Error) {
     networkFailureHandler?(error)
   }
 }

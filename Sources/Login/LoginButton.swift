@@ -35,7 +35,7 @@ import FBSDKLoginKit
  */
 public class LoginButton: UIView {
 
-  private var sdkLoginButton: FBSDKLoginButton
+  private var sdkLoginButton: LoginButton
 
   /// Delegate of the login button that can handle the result, logout events.
   public weak var delegate: LoginButtonDelegate?
@@ -44,28 +44,28 @@ public class LoginButton: UIView {
   /// The login behavior that is going to be used. Default: `.Native`.
   public var loginBehavior: LoginBehavior = .native {
     didSet {
-      sdkLoginButton.loginBehavior = loginBehavior.sdkBehavior
+      sdkLoginButton.loginBehavior = loginBehavior
     }
   }
 
   /// The default audience. Default: `.Friends`.
   public var defaultAudience: LoginDefaultAudience = .friends {
     didSet {
-      sdkLoginButton.defaultAudience = defaultAudience.sdkAudience
+      sdkLoginButton.defaultAudience = defaultAudience
     }
   }
 
   /// The desired tooltip behavior. Default: `.Automatic`.
   public var tooltipBehavior: TooltipBehavior = .automatic {
     didSet {
-      sdkLoginButton.tooltipBehavior = tooltipBehavior.sdkBehavior
+      sdkLoginButton.tooltipBehavior = tooltipBehavior
     }
   }
 
   /// The desired tooltip color style. Default: `.FriendlyBlue`.
   public var tooltipColorStyle: TooltipColorStyle = .friendlyBlue {
     didSet {
-      sdkLoginButton.tooltipColorStyle = tooltipColorStyle.sdkColorStyle
+      sdkLoginButton.tooltipColorStyle = tooltipColorStyle
     }
   }
 
@@ -76,9 +76,8 @@ public class LoginButton: UIView {
    - parameter readPermissions: Array of read permissions to request when logging in.
    */
   public init(frame: CGRect? = nil, readPermissions: [ReadPermission]) {
-    let sdkLoginButton = FBSDKLoginButton()
-    sdkLoginButton.readPermissions = readPermissions.map { $0.permissionValue.name }
-
+    let sdkLoginButton = LoginButton(readPermissions: readPermissions)
+    
     self.sdkLoginButton = sdkLoginButton
     delegateBridge = LoginButtonDelegateBridge()
 
@@ -96,9 +95,8 @@ public class LoginButton: UIView {
    - parameter publishPermissions: Array of publish permissions to request when logging in.
    */
   public init(frame: CGRect? = nil, publishPermissions: [PublishPermission]) {
-    let sdkLoginButton = FBSDKLoginButton()
-    sdkLoginButton.publishPermissions = publishPermissions.map { $0.permissionValue.name }
-
+    let sdkLoginButton = LoginButton(publishPermissions: publishPermissions)
+    
     self.sdkLoginButton = sdkLoginButton
     delegateBridge = LoginButtonDelegateBridge()
 
@@ -115,7 +113,7 @@ public class LoginButton: UIView {
    - parameter decoder: The coder to initialize from.
    */
   public required init?(coder decoder: NSCoder) {
-    sdkLoginButton = FBSDKLoginButton(coder: decoder) ?? FBSDKLoginButton()
+    sdkLoginButton = LoginButton(coder: decoder)!
     delegateBridge = LoginButtonDelegateBridge()
 
     super.init(coder: decoder)

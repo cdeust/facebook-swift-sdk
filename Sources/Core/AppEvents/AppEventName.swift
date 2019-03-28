@@ -90,21 +90,21 @@ public enum AppEventName: Hashable, RawRepresentable, CustomStringConvertible, E
   /// The corresponding `String` value.
   public var rawValue: String {
     switch self {
-    case .completedRegistration: return FBSDKAppEventNameCompletedRegistration
-    case .completedTutorial: return FBSDKAppEventNameCompletedTutorial
-    case .viewedContent: return FBSDKAppEventNameViewedContent
-    case .searched: return FBSDKAppEventNameSearched
-    case .rated: return FBSDKAppEventNameRated
+    case .completedRegistration: return AppEvents.Name.completedRegistration.rawValue
+    case .completedTutorial: return AppEvents.Name.completedTutorial.rawValue
+    case .viewedContent: return AppEvents.Name.viewedContent.rawValue
+    case .searched: return AppEvents.Name.searched.rawValue
+    case .rated: return AppEvents.Name.rated.rawValue
 
     case .purchased: return "fb_mobile_purchase" // Hard-coded as a string, since it's internal API of FBSDKCoreKit.
-    case .addedToCart: return FBSDKAppEventNameAddedToCart
-    case .addedToWishlist: return FBSDKAppEventNameAddedToWishlist
-    case .addedPaymentInfo: return FBSDKAppEventNameAddedPaymentInfo
-    case .initiatedCheckout: return FBSDKAppEventNameInitiatedCheckout
+    case .addedToCart: return AppEvents.Name.addedToCart.rawValue
+    case .addedToWishlist: return AppEvents.Name.addedToWishlist.rawValue
+    case .addedPaymentInfo: return AppEvents.Name.addedPaymentInfo.rawValue
+    case .initiatedCheckout: return AppEvents.Name.initiatedCheckout.rawValue
 
-    case .achievedLevel: return FBSDKAppEventNameAchievedLevel
-    case .unlockedAchievement: return FBSDKAppEventNameUnlockedAchievement
-    case .spentCredits: return FBSDKAppEventNameSpentCredits
+    case .achievedLevel: return AppEvents.Name.achievedLevel.rawValue
+    case .unlockedAchievement: return AppEvents.Name.unlockedAchievement.rawValue
+    case .spentCredits: return AppEvents.Name.spentCredits.rawValue
 
     case .custom(let string): return string
     }

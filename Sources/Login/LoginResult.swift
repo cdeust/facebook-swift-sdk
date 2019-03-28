@@ -16,22 +16,24 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@testable import FacebookCore
+import FBSDKCoreKit
 import FBSDKLoginKit
 import Foundation
+
+@testable import FacebookCore
 
 /**
  Describes the result of a login attempt.
  */
 public enum LoginResult {
   /// User succesfully logged in. Contains granted, declined permissions and access token.
-  case success(grantedPermissions: Set<Permission>, declinedPermissions: Set<Permission>, token: AccessToken)
+  case success(grantedPermissions: Set<Permission>, declinedPermissions: Set<Permission>, token: FBSDKCoreKit.AccessToken)
   /// Login attempt was cancelled by the user.
   case cancelled
   /// Login attempt failed.
   case failed(Error)
 
-  internal init(sdkResult: FBSDKLoginManagerLoginResult?, error: Error?) {
+  internal init(sdkResult: LoginManagerLoginResult?, error: Error?) {
     if let error = error {
       self = .failed(error)
       return
@@ -48,14 +50,13 @@ public enum LoginResult {
       return
     }
 
-    let grantedPermissions = (sdkResult.grantedPermissions?.compactMap { $0 as? String }
-      .map { Permission(name: $0) })
-      .map(Set.init)
-    let declinedPermissions = (sdkResult.declinedPermissions?.compactMap { $0 as? String }
-      .map { Permission(name: $0) })
-      .map(Set.init)
-    self = .success(grantedPermissions: grantedPermissions ?? [],
-                    declinedPermissions: declinedPermissions ?? [],
-                    token: AccessToken(sdkAccessToken: token))
+    let grantedPermissionsArray = sdkResult.grantedPermissions.compactMap { $0 }.map { Permission(name: $0) }
+    let grantedPermissions = Set<Permission>(grantedPermissionsArray)
+    let declinedPermissionsArray = sdkResult.declinedPermissions.compactMap { $0 }.map { Permission(name: $0) }
+    let declinedPermissions = Set<Permission>(declinedPermissionsArray)
+    
+    self = .success(grantedPermissions: grantedPermissions,
+                    declinedPermissions: declinedPermissions,
+                    token: token)
   }
 }

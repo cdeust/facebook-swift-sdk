@@ -44,7 +44,7 @@ public extension GameRequest {
     /// The default filter. Includes users and non-users.
     public static let none: RecipientsFilter = [ ]
 
-    internal var sdkFilterRepresentation: FBSDKGameRequestFilter {
+    internal var sdkFilterRepresentation: GameRequestFilter {
       if contains(.hideUsers) {
         return .appNonUsers
       }

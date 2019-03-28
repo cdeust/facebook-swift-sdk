@@ -23,8 +23,8 @@ import UIKit
 public extension AppInvite {
   /// A dialog to send app invites.
   final class Dialog {
-    private let sdkDialog: FBSDKAppInviteDialog
-    private weak var sdkDelegate: SDKDelegate?
+    public let sdkDialog: AppInvite.Dialog
+    public weak var sdkDelegate: SDKDelegate?
 
     /// The invite to send.
     public let invite: AppInvite
@@ -36,10 +36,10 @@ public extension AppInvite {
      */
     public var presentingViewController: UIViewController? {
       get {
-        return sdkDialog.fromViewController
+        return sdkDialog.presentingViewController
       }
       set {
-        sdkDialog.fromViewController = newValue
+        sdkDialog.presentingViewController = newValue
       }
     }
 
@@ -59,9 +59,7 @@ public extension AppInvite {
      - parameter invite: The invite to send.
      */
     public init(invite: AppInvite) {
-      sdkDialog = FBSDKAppInviteDialog()
-      sdkDialog.content = invite.sdkInviteRepresentation
-
+      sdkDialog = AppInvite.Dialog(invite: invite)
       sdkDelegate = SDKDelegate()
       sdkDelegate?.setupAsDelegateFor(sdkDialog)
 
@@ -82,7 +80,7 @@ public extension AppInvite {
         }
       }
 
-      sdkDialog.show()
+      try sdkDialog.show()
       sdkDelegate?.completion = completionHandler
 
       if let error = error {

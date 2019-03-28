@@ -19,32 +19,30 @@
 import FBSDKShareKit
 import Foundation
 
-@testable import FacebookCore
-
 extension GameRequest {
-  internal class SDKDelegate: NSObject, FBSDKGameRequestDialogDelegate {
+  internal class SDKDelegate: NSObject {
     var completion: ((Result) -> Void)?
 
-    func gameRequestDialog(_ gameRequestDialog: FBSDKGameRequestDialog?,
+    func gameRequestDialog(_ gameRequestDialog: GameRequestDialog?,
                            didCompleteWithResults results: [AnyHashable: Any]?) {
       let result: Result = .success(results?.keyValueFlatMap { ($0 as? String, $1 as? String) } ?? [:])
       completion?(result)
     }
 
-    func gameRequestDialog(_ gameRequestDialog: FBSDKGameRequestDialog?, didFailWithError error: Error) {
+    func gameRequestDialog(_ gameRequestDialog: GameRequestDialog?, didFailWithError error: Error) {
       completion?(.failed(error))
     }
 
-    func gameRequestDialogDidCancel(_ gameRequestDialog: FBSDKGameRequestDialog?) {
+    func gameRequestDialogDidCancel(_ gameRequestDialog: GameRequestDialog?) {
       completion?(.cancelled)
     }
 
-    func setupAsDelegateFor(_ dialog: FBSDKGameRequestDialog) {
+    func setupAsDelegateFor(_ dialog: GameRequestDialog) {
       // We need for the connection to retain us,
       // so we can stick around and keep calling into handlers,
       // as long as the connection is alive/sending messages.
       objc_setAssociatedObject(dialog, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN)
-      dialog.delegate = self
+      dialog.delegate = self as? GameRequestDialogDelegate
     }
   }
 }

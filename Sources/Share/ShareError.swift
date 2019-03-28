@@ -44,16 +44,15 @@ public enum ShareError: Error {
    - parameter error: The error to attempt to convert.
    */
   internal init?(error: NSError) {
-    if error.domain != FBSDKShareErrorDomain {
+    if error.domain != ShareErrorDomain {
       return nil
     }
-
-    switch FBSDKShareErrorCode(rawValue: error.code) {
-    case .reservedErrorCode?: self = .reserved
-    case .openGraphErrorCode?: self = .openGraph
-    case .dialogNotAvailableErrorCode?: self = .dialogNotAvailable
-    case .unknownErrorCode?: self = .unknown
-    default: return nil
+    switch ShareError(error: error) {
+      case .some(.dialogNotAvailable): self = .dialogNotAvailable
+      case .some(.reserved): self = .reserved
+      case .some(.openGraph): self = .openGraph
+      case .some(.unknown): self = .unknown
+      default: return nil
     }
   }
 }

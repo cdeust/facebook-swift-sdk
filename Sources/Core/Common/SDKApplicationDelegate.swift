@@ -28,13 +28,13 @@ import UIKit
  should call them in the respective methods in your AppDelegate implementation.
  */
 public final class SDKApplicationDelegate {
-  private weak var delegate: FBSDKApplicationDelegate?
+  private weak var delegate: ApplicationDelegate?
 
   /// Returns the singleton instance of an application delegate.
   public static let shared: SDKApplicationDelegate = SDKApplicationDelegate()
 
   private init() {
-    self.delegate = FBSDKApplicationDelegate.sharedInstance()
+    self.delegate = ApplicationDelegate.shared
   }
 
   /**
